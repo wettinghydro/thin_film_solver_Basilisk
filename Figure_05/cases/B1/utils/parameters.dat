@@ -1,0 +1,46 @@
+#Fill in the following variables
+#-------------------------------
+#-------General Constants-------
+#-------------------------------
+#1. Precursor film height (precFilm) 
+
+#2. Mobility exponent n
+
+#3. Interaction exponent m
+
+#-------------------------------
+#-----Inclination Constants-----
+#-------------------------------
+#1. Bond number 
+
+#2. Substrate Angle (Degrees)
+
+#3. Contact Angle (Degrees)
+
+#-------------------------------
+#-----Vibration Constants-----
+#-------------------------------
+#1. Vibration amplitude 
+
+#2. Force Angle ψ (Degrees)
+
+#3. Force Period 
+
+#-------------------------------
+#-----Evaporation Constants-----
+#-------------------------------
+#1. kappa 
+
+#2. delta 
+
+#3. Evaporation factor (E) 
+
+#-------------------------------
+#-----Simulation Parameters-----
+#-------------------------------
+#1. Tend 
+
+#2. Level Min 
+
+#3. Level Max 
+
