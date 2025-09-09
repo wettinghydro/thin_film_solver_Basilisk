@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the associated paper as below."
+authors:
+  - family-names: Vrionis
+    given-names: P.Y.
+    orcid: "https://orcid.org/0000-0003-0917-7884"
+  - family-names: Demou
+    given-names: Andreas D.
+    orcid: "https://orcid.org/0000-0002-9510-0682"
+  - family-names: Karapetsas
+    given-names: George
+    orcid: "https://orcid.org/0000-0002-3486-7484"
+  - family-names: Papageorgiou
+    given-names: Demetrios T.
+    orcid: "https://orcid.org/0000-0002-4596-0107"
+  - family-names: Savva
+    given-names: Nikos
+    orcid: "https://orcid.org/0000-0003-1549-3154"
+title: "An efficient and highly scalable solver for modelling thin film flows in heterogeneous environments"
+doi: "10.1007/s00162-025-00757-x"
+url: "https://github.com/wettinghydro/thin_film_solver_Basilisk"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: Vrionis
+      given-names: P.Y.
+    - family-names: Demou
+      given-names: Andreas D.
+    - family-names: Karapetsas
+      given-names: George
+    - family-names: Papageorgiou
+      given-names: Demetrios T.
+    - family-names: Savva
+      given-names: Nikos
+  title: "An efficient and highly scalable solver for modelling thin film flows in heterogeneous environments"
+  journal: "Theoretical and Computational Fluid Dynamics"
+  year: 2025
+  doi: "10.1007/s00162-025-00757-x"
