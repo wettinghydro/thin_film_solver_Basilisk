@@ -1,0 +1,210 @@
+\documentclass[tikz]{standalone}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{stix}
+
+\usepackage{bm}\def\*#1{\bm{#1}}
+
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{calc, shapes, positioning}
+
+
+
+%INSERT AXES SCALINGS (needs manual modification to get their position right)
+\pgfplotsset{
+    every x tick scale label/.style={at={(xticklabel cs:1.05,0.25em)},
+    /pgfplots/near ticklabel align=inside,
+    anchor=near xticklabel,inner sep=0pt},
+    every y tick scale label/.style={at={(yticklabel cs:1,-1.3em)},
+    /pgfplots/near ticklabel align=outside,
+    anchor=near yticklabel opposite,inner sep=0pt},
+    every axis/.append style={ylabel absolute, font=\small,
+    ylabel style={yshift=-0.6cm,rotate=0},
+    tick scale binop=\times,/pgf/number format/1000 sep={}},
+    every xtick scale label code/.code={$(\times 10^{#1})$},
+    axis line style={black, line width = 0.5pt},
+    every tick/.append style={black, line width = 0.5pt},
+    every axis y label/.append style={yshift=-0.1cm,rotate=-90},
+    every axis z label/.append style={rotate=0},
+    every axis x label/.append style={},
+    }
+
+
+
+\definecolor{myblue}{rgb}{0,0,0.7}
+\definecolor{myred}{rgb}{1,0,0}
+\definecolor{mypub}{rgb}{0.4,0.4,0.7}
+\definecolor{mygreen}{rgb}{0,0.7,0}
+\definecolor{mydred}{rgb}{0.7,0,0}
+\definecolor{mywhite}{rgb}{1,1,1}
+\definecolor{themecolor}{cmyk}{1,0.2,0.05,0.30}
+\definecolor{greenD}{RGB}{0,176,80}
+
+
+\definecolor{HL}{HTML}{d15306}
+\definecolor{background}{HTML}{fafafa}
+\definecolor{primaryLight}{HTML}{34495e}
+\definecolor{primary}{HTML}{2d3e50}
+\definecolor{secondary}{HTML}{d15306}
+\definecolor{tertiary}{HTML}{35837b}
+\definecolor{lightblue}{HTML}{2ca3dc}     	
+
+\definecolor{pyblue}{HTML}{1f77b4}
+\definecolor{pyorange}{HTML}{ff7f0e}
+\definecolor{pygreen}{HTML}{2ca02c}
+\definecolor{pyred}{HTML}{d62728}
+\definecolor{pypurple}{HTML}{9467bd}
+\definecolor{pybrown}{HTML}{8c564b}
+\definecolor{pypink}{HTML}{e377c2}
+\definecolor{pygray}{HTML}{7f7f7f}
+\definecolor{pyolive}{HTML}{bcbd22}
+\definecolor{pycyan}{HTML}{17becf}  
+\definecolor{Gray}{HTML}{858b8f}
+\definecolor{text}{HTML}{4F5D66}
+
+
+\definecolor{mDarkBrown}{HTML}{604c38}
+\definecolor{mDarkTeal}{HTML}{23373b}
+\definecolor{mLightBrown}{HTML}{EB811B}
+\definecolor{mLightGreen}{HTML}{14B03D}
+\definecolor{mTextBlock}{HTML}{e4c4a7}
+\definecolor{ucygreen}{HTML}{7e901a}
+
+\colorlet{secondary}{mLightBrown}
+
+
+\begin{document}%\small
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% 2 x 3
+\begin{tikzpicture}
+    \begin{axis}[%
+            mark options={solid,mark size=1.5pt},
+            width=4.4cm,
+            height=4.4cm,
+            xmin=-3, xmax=3,
+            ymin=-3, ymax=3,
+            ylabel = $y$,
+            xlabel = $x$,
+            xtick ={-3,-1.5,0,1.5,3},
+            ytick ={-3,-1.5,0,1.5,3},
+            yticklabels ={-3.0,-1.5,0,1.5,3.0},
+            yticklabels ={-3.0,-1.5,0,1.5,3.0},
+            scale only axis,
+            anchor = south west,
+            xlabel style={yshift=0.25em},legend image post style={scale=1}, legend style={at={(0.05,0.95)},fill=none,inner sep=0pt,anchor=north west,draw=none},
+            legend style={fill=none,inner sep=0pt,anchor=north east,draw=none},
+            legend pos = outer north east,
+            legend cell align={left},
+            name=plota,
+            axis on top,
+            ]
+
+            \addplot [forget plot] graphics [ xmin=-3, xmax=3, ymin=-3, ymax=3, ] { pngs/t0to22.png };
+    \end{axis}
+
+    \begin{axis}[%
+            mark options={solid,mark size=1.5pt},
+            width=4.4cm,
+            height=4.4cm,
+            xmin=-3, xmax=3,
+            ymin=-3, ymax=3,
+            xtick ={-3,-1.5,0,1.5,3},
+            ytick ={-3,-1.5,0,1.5,3},
+            xticklabels ={-3.0,-1.5,0,1.5,3.0},
+            yticklabels ={},
+            scale only axis,
+            anchor = south west,
+            ylabel style={yshift=0.5em},
+            xlabel style={yshift=0.25em},legend image post style={scale=1}, legend style={at={(0.05,0.95)},fill=none,inner sep=0pt,anchor=north west,draw=none},
+            legend cell align={left},
+            xlabel = $x$,
+            name=plotb,
+            anchor=south west,
+            at = {($(plota.south east)+(2.5em,0)$)},
+            axis on top
+            ]
+
+            \addplot [forget plot] graphics [ xmin=-3, xmax=3, ymin=-3, ymax=3, ] { pngs/t13.png };
+    \end{axis}  
+ 
+
+    \begin{axis}[%
+            mark options={solid,mark size=1.5pt},
+            width=4.4cm,
+            height=4.4cm,
+            xmin=-3, xmax=-1.5, ymin=1.5, ymax=3, 
+            xtick ={-3,-2.25, -1.5},
+          	ytick ={1.5, 2.25, 3},
+            xticklabels ={-3.0,-2.25, -1.5},
+          	yticklabels ={1.5, 2.25, 3.0},
+            scale only axis,
+            anchor = south west,
+            xlabel = {$x$},
+            ylabel = {$y$},
+            ylabel style={yshift=0.5em},
+            xlabel style={yshift=0.25em},legend image post style={scale=1}, legend style={at={(0.05,0.95)},fill=none,inner sep=0pt,anchor=north west,draw=none},
+            legend cell align={left},
+            name=plotd,
+            anchor=north west,
+            at = {($(plota.south west)+(0,-3.5em)$)},
+            axis on top,
+            ]
+
+            \addplot [forget plot] graphics [ 
+			xmin=-3, xmax=-1.5, ymin=1.5, ymax=3, 	
+            ] { pngs/t0to22_close.png };
+    \end{axis}  
+
+
+    \begin{axis}[%
+            mark options={solid,mark size=1.5pt},
+            width=4.4cm,
+            height=4.4cm,
+            %xmin=-1.2, xmax=-0.2, ymin=-1.6, ymax=-0.6,
+            xmin=-2.8, xmax=-1.3, ymin=-2, ymax=-0.5,
+            xtick ={-2.8,-2.05, -1.3},
+          	ytick ={-2.0, -1.25, -0.5},
+            xticklabels ={-2.8,-2.05, -1.3},
+          	yticklabels ={-2.0, -1.25, -0.5},
+            scale only axis,
+            anchor = south west,
+            ylabel style={yshift=0.5em},
+            xlabel = {$x$},
+            xlabel style={yshift=0.25em},legend image post style={scale=1}, legend style={at={(0.05,0.95)},fill=none,inner sep=0pt,anchor=north west,draw=none},
+            legend cell align={left},
+            name=plote,
+            anchor=north west,
+            at = {($(plotb.south west)+(0,-3.5em)$)},
+            axis on top
+            ]
+
+            \addplot [forget plot] graphics [ 
+            xmin=-2.8, xmax=-1.3, ymin=-2, ymax=-0.5,
+            ] {pngs/t13_close.png };
+    \end{axis}  
+
+
+	\node[above] at ($(plotd.north)+(-0.1em,0)$) {\textcolor{black}{t=0.5}\qquad\textcolor{red}{t=22.0}};
+	\node[above] at ($(plote.north)+(-0.1em,0)$) {\textcolor{black}{t=13.0}\qquad\textcolor{red}{t=13.5}};
+		
+    \node[left] at ($(plota.north west)+(-1.4em,0.5em)$) {(\textit{a})};
+    \node[left] at ($(plotb.north west)+(0.15em,0.5em)$) {(\textit{b})};
+
+
+
+    \node[rectangle, draw, thick, minimum width=3.5em, minimum height=3.5em,] 
+    (ra) at ($(plota.north west)+(+1.7em,-1.7em)$)  {};
+    \draw[-latex, thick] (ra.south) to [bend left] (plotd.north);
+
+    \node[rectangle, draw, thick, minimum width=3.0em, minimum height=3.0em,] 
+    (rb) at ($(plotb.south)+(-4.2em,3.5em)$)  {};
+    \draw[-latex, thick] (rb.south) to [bend left] (plote.north);
+
+
+\end{tikzpicture}
+
+
+\end{document}
+

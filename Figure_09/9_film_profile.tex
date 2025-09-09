@@ -1,0 +1,240 @@
+\documentclass[tikz]{standalone}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{stix}
+
+\usepackage{bm}\def\*#1{\bm{#1}}
+
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{calc}
+
+%INSERT AXES SCALINGS (needs manual modification to get their position right)
+\pgfplotsset{
+    every x tick scale label/.style={at={(xticklabel cs:1.05,0.25em)},
+    /pgfplots/near ticklabel align=inside,
+    anchor=near xticklabel,inner sep=0pt},
+    every y tick scale label/.style={at={(yticklabel cs:1,-1.3em)},
+    /pgfplots/near ticklabel align=outside,
+    anchor=near yticklabel opposite,inner sep=0pt},
+    every axis/.append style={ylabel absolute,ylabel style={yshift=-0.6cm,rotate=0},tick scale binop=\times,/pgf/number format/1000 sep={}},
+    every xtick scale label code/.code={$(\times 10^{#1})$},
+    axis line style={black, line width = 0.5pt},
+    every tick/.append style={black, line width = 0.5pt},
+    every axis y label/.append style={yshift=0.3cm,rotate=-90},
+    every axis z label/.append style={rotate=0},
+    every axis x label/.append style={},
+    }
+
+
+
+\definecolor{myblue}{rgb}{0,0,0.7}
+\definecolor{myred}{rgb}{1,0,0}
+\definecolor{mypub}{rgb}{0.4,0.4,0.7}
+\definecolor{mygreen}{rgb}{0,0.7,0}
+\definecolor{mydred}{rgb}{0.7,0,0}
+\definecolor{mywhite}{rgb}{1,1,1}
+\definecolor{themecolor}{cmyk}{1,0.2,0.05,0.30}
+\definecolor{greenD}{RGB}{0,176,80}
+
+
+\definecolor{HL}{HTML}{d15306}
+\definecolor{background}{HTML}{fafafa}
+\definecolor{primaryLight}{HTML}{34495e}
+\definecolor{primary}{HTML}{2d3e50}
+\definecolor{secondary}{HTML}{d15306}
+\definecolor{tertiary}{HTML}{35837b}
+\definecolor{lightblue}{HTML}{2ca3dc}     	
+
+\definecolor{pyblue}{HTML}{1f77b4}
+\definecolor{pyorange}{HTML}{ff7f0e}
+\definecolor{pygreen}{HTML}{2ca02c}
+\definecolor{pyred}{HTML}{d62728}
+\definecolor{pypurple}{HTML}{9467bd}
+\definecolor{pybrown}{HTML}{8c564b}
+\definecolor{pypink}{HTML}{e377c2}
+\definecolor{pygray}{HTML}{7f7f7f}
+\definecolor{pyolive}{HTML}{bcbd22}
+\definecolor{pycyan}{HTML}{17becf}  
+\definecolor{Gray}{HTML}{858b8f}
+\definecolor{text}{HTML}{4F5D66}
+
+
+\definecolor{mDarkBrown}{HTML}{604c38}
+\definecolor{mDarkTeal}{HTML}{23373b}
+\definecolor{mLightBrown}{HTML}{EB811B}
+\definecolor{mLightGreen}{HTML}{14B03D}
+\definecolor{mTextBlock}{HTML}{e4c4a7}
+\definecolor{ucygreen}{HTML}{7e901a}
+
+\colorlet{secondary}{mLightBrown}
+
+
+\begin{document}\small
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% 2 x 3
+\begin{tikzpicture}%[gnuplot]
+    \begin{axis}[%
+            mark options={solid,mark size=1.5pt},
+            width=4.4cm,
+            height=4.4cm,
+            xmin=-3, xmax=3,
+            ymin=-3, ymax=3,
+            %xlabel = $x$,
+            ylabel = $y$,
+            xtick ={-3,-1.5,0,1.5,3},
+            ytick ={-3,-1.5,0,1.5,3},
+            %yticklabels = {},
+            xticklabels = {},
+            scale only axis,
+            anchor = south west,
+            xlabel style={yshift=0.25em},legend image post style={scale=1}, 
+            legend style={fill=none,inner sep=0pt,anchor=north east,draw=none},
+            legend pos = outer north east,
+            legend cell align={left},
+            name=plota,
+            yticklabel={\ifdim\tick pt=0pt $0$ \else\pgfmathprintnumber{\tick}\fi}, 
+            axis on top,
+            ]
+
+            \addplot [forget plot] graphics [ xmin=-3, xmax=3, ymin=-3, ymax=3, ] { pngs/Precursor_036_a_transp.png };
+
+    \end{axis}
+
+    \begin{axis}[%
+            mark options={solid,mark size=1.5pt},
+            width=4.4cm,
+            height=4.4cm,
+            xmin=-3, xmax=3,
+            ymin=-3, ymax=3,
+            %xlabel = $x$,
+            %ylabel = $y$,
+            xtick ={-3,-1.5,0,1.5,3},
+            ytick ={-3,-1.5,0,1.5,3},
+            scale only axis,
+            anchor = south west,
+            ylabel style={yshift=-2em},
+            xlabel style={yshift=0.25em},legend image post style={scale=1}, legend style={at={(0.05,0.95)},fill=none,inner sep=0pt,anchor=north west,draw=none},
+            legend cell align={left},
+            yticklabels = {},
+            xticklabels = {},        
+            name=plotb,
+            anchor=south west,
+            at = {($(plota.south east)+(2.5em,0)$)},
+            axis on top,
+            ]
+
+            \addplot [forget plot] graphics [ xmin=-3, xmax=3, ymin=-3, ymax=3, ] { pngs/Precursor_036_a_transp.png };
+    \end{axis}  
+    \begin{axis}[%
+            mark options={solid,mark size=1.5pt},
+            width=4.4cm,
+            height=4.4cm,
+            xmin=-3, xmax=3,
+            ymin=-3, ymax=3,
+            xtick ={-3,-1.5,0,1.5,3},
+            ytick ={-3,-1.5,0,1.5,3},
+            scale only axis,
+            anchor = south west,
+            yticklabels = {},
+            xticklabels = {},
+            legend image post style={scale=1}, legend style={at={(0.05,0.95)},fill=none,inner sep=0pt,anchor=north west,draw=none},
+            legend cell align={left},
+            name=plotc,
+            anchor=south west,
+            at = {($(plotb.south east)+(2.5em,0)$)},axis on top,
+            ]
+
+            \addplot [forget plot] graphics [ xmin=-3, xmax=3, ymin=-3, ymax=3, ] { pngs/Precursor_036_a_transp.png };
+    \end{axis}  
+
+    \begin{axis}[%
+            mark options={solid,mark size=1.5pt},
+            width=4.4cm,
+            height=4.4cm,
+            xmin=-3, xmax=3,
+            ymin=-3, ymax=3,
+            scale only axis,
+            anchor = south west,
+            xtick ={-3,-1.5,0,1.5,3},
+            ytick ={-3,-1.5,0,1.5,3},
+            xlabel = {$x$},
+            ylabel = {$y$},
+            xlabel style={yshift=0.25em},legend image post style={scale=1}, legend style={at={(0.05,0.95)},fill=none,inner sep=0pt,anchor=north west,draw=none},
+            legend cell align={left},
+            name=plotd,
+            anchor=north west,
+            at = {($(plota.south west)+(0,-1.5em)$)},axis on top,
+            xticklabel={\ifdim\tick pt=0pt $0$ \else\pgfmathprintnumber{\tick}\fi}, 
+            yticklabel={\ifdim\tick pt=0pt $0$ \else\pgfmathprintnumber{\tick}\fi}, 
+            ]
+
+            \addplot [forget plot] graphics [ xmin=-3, xmax=3, ymin=-3, ymax=3, ] { pngs/Precursor_036_a_transp.png };
+    \end{axis}  
+
+
+    \begin{axis}[%
+            mark options={solid,mark size=1.5pt},
+            width=4.4cm,
+            height=4.4cm,
+            xmin=-3, xmax=3,
+            ymin=-3, ymax=3,
+            xtick ={-3,-1.5,0,1.5,3},
+            ytick ={-3,-1.5,0,1.5,3},
+            scale only axis,
+            anchor = south west,
+            ylabel style={yshift=-1em},
+            xlabel = {$x$},
+            xlabel style={yshift=0.25em},legend image post style={scale=1}, legend style={at={(0.05,0.95)},fill=none,inner sep=0pt,anchor=north west,draw=none},
+            legend cell align={left},
+            name=plote,
+            yticklabels = {},
+            anchor=north west,
+            at = {($(plotb.south west)+(0,-1.5em)$)},axis on top,
+            xticklabel={\ifdim\tick pt=0pt $0$ \else\pgfmathprintnumber{\tick}\fi}, 
+            ]
+
+            \addplot [forget plot] graphics [ xmin=-3, xmax=3, ymin=-3, ymax=3, ] { pngs/Precursor_036_a_transp.png };
+    \end{axis}  
+
+
+    \begin{axis}[%
+            mark options={solid,mark size=1.5pt},
+            width=4.4cm,
+            height=4.4cm,
+            xmin=-3, xmax=3,
+            ymin=-3, ymax=3,
+            xtick ={-3,-1.5,0,1.5,3},
+            ytick ={-3,-1.5,0,1.5,3},
+            scale only axis,
+            anchor = south west,
+            ylabel style={yshift=-1em},
+            xlabel = {$x$},
+            xlabel style={yshift=0.25em},legend image post style={scale=1}, legend style={at={(0.05,0.95)},fill=none,inner sep=0pt,anchor=north west,draw=none},
+            legend cell align={left},
+            name=plotf,
+            yticklabels = {},
+            anchor=north west,
+            at = {($(plotc.south west)+(0,-1.5em)$)},axis on top,
+            xticklabel={\ifdim\tick pt=0pt $0$ \else\pgfmathprintnumber{\tick}\fi}, 
+            ]
+            \addplot [forget plot] graphics [ xmin=-3, xmax=3, ymin=-3, ymax=3, ] { pngs/Precursor_036_a_transp.png };
+    \end{axis}  
+
+    \node[left] at ($(plota.north west)+(-1.9em,0)$) {(\textit{a})};
+    \node[left] at ($(plotb.north west)+(0.15em,0)$) {(\textit{b})};
+    \node[left] at ($(plotc.north west)+(0.15em,0)$) {(\textit{c})};
+
+    \node[left] at ($(plotd.north west)+(-1.9em,0)$) {(\textit{d})};
+    \node[left] at ($(plote.north west)+(0.15em,0)$) {(\textit{e})};
+    \node[left] at ($(plotf.north west)+(0.15em,0)$) {(\textit{f})};
+
+    \draw [black, ultra thick, -latex, yshift=-0.5em] ($(plote.south)-(4em,4em)$) --++ (8em, 0)
+    node[above, midway] (gravityVector) {gravity};
+    \node at($(gravityVector.south)-(0em,0.5em)$){};
+
+\end{tikzpicture}
+
+
+\end{document}

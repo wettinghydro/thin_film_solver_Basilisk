@@ -1,0 +1,121 @@
+\documentclass[tikz]{standalone}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{stix}
+
+\usepackage{bm}\def\*#1{\bm{#1}}
+
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{calc}
+
+%INSERT AXES SCALINGS (needs manual modification to get their position right)
+\pgfplotsset{
+every x tick scale label/.style={at={(xticklabel cs:1.05,0.25em)},
+                       /pgfplots/near ticklabel align=inside,
+                       anchor=near xticklabel,inner sep=0pt},
+every y tick scale label/.style={at={(yticklabel cs:1,-1.3em)},
+                       /pgfplots/near ticklabel align=outside,
+                       anchor=near yticklabel opposite,inner sep=0pt},
+ every axis/.append style={ylabel absolute,ylabel style={yshift=-0.2cm,rotate=0},tick scale binop=\times,/pgf/number format/1000 sep={}},
+ every xtick scale label code/.code={$(\times 10^{#1})$},
+ axis line style={black, line width = 0.5pt},
+ every tick/.append style={black, line width = 0.5pt},
+ every axis y label/.append style={yshift=0.3cm,rotate=-90},
+ every axis z label/.append style={rotate=0},
+ every axis x label/.append style={},
+}
+
+
+
+\definecolor{myblue}{rgb}{0,0,0.7}
+\definecolor{myred}{rgb}{1,0,0}
+\definecolor{mypub}{rgb}{0.4,0.4,0.7}
+\definecolor{mygreen}{rgb}{0,0.7,0}
+\definecolor{mydred}{rgb}{0.7,0,0}
+\definecolor{mywhite}{rgb}{1,1,1}
+\definecolor{themecolor}{cmyk}{1,0.2,0.05,0.30}
+\definecolor{greenD}{RGB}{0,176,80}
+
+
+\definecolor{HL}{HTML}{d15306}
+\definecolor{background}{HTML}{fafafa}
+\definecolor{primaryLight}{HTML}{34495e}
+\definecolor{primary}{HTML}{2d3e50}
+\definecolor{secondary}{HTML}{d15306}
+\definecolor{tertiary}{HTML}{35837b}
+\definecolor{lightblue}{HTML}{2ca3dc}     	
+      	
+\definecolor{pyblue}{HTML}{1f77b4}
+\definecolor{pyorange}{HTML}{ff7f0e}
+\definecolor{pygreen}{HTML}{2ca02c}
+\definecolor{pyred}{HTML}{d62728}
+\definecolor{pypurple}{HTML}{9467bd}
+\definecolor{pybrown}{HTML}{8c564b}
+\definecolor{pypink}{HTML}{e377c2}
+\definecolor{pygray}{HTML}{7f7f7f}
+\definecolor{pyolive}{HTML}{bcbd22}
+\definecolor{pycyan}{HTML}{17becf}  
+\definecolor{Gray}{HTML}{858b8f}
+\definecolor{text}{HTML}{4F5D66}
+
+
+\definecolor{mDarkBrown}{HTML}{604c38}
+\definecolor{mDarkTeal}{HTML}{23373b}
+\definecolor{mLightBrown}{HTML}{EB811B}
+\definecolor{mLightGreen}{HTML}{14B03D}
+\definecolor{mTextBlock}{HTML}{e4c4a7}
+\definecolor{ucygreen}{HTML}{7e901a}
+
+\colorlet{secondary}{mLightBrown}
+
+
+\begin{document}\small
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% 1 x 2
+\begin{tikzpicture}
+    \begin{axis}[%
+            mark options={solid,mark size=1.5pt},
+            width=6.6cm,
+            height=4.4cm,
+            xmin=0, xmax=6,
+            ymin=-6, ymax=-2,
+            ylabel = $y$,
+            xlabel = $x$,
+%            xtick ={-3,-2,-1,0,1,2,3},
+%            ytick ={-3,-2,-1,0,1,2,3},
+            scale only axis,
+            anchor = south west,
+            xlabel style={yshift=0.25em},legend image post style={scale=1}, 
+            legend style={fill=none,inner sep=0pt,anchor=north east,draw=none},
+            legend pos = outer north east,
+            legend cell align={left},
+            name=plota,
+        xticklabel={\ifdim\tick pt=0pt $0$ \else\pgfmathprintnumber{\tick}\fi}, 
+        x tick label style={/pgf/number format/.cd,fixed,fixed zerofill,precision=1,/tikz/.cd},
+        yticklabel={\ifdim\tick pt=0pt $0$ \else\pgfmathprintnumber{\tick}\fi}, 
+        y tick label style={/pgf/number format/.cd,fixed,fixed zerofill,precision=1,/tikz/.cd},
+        axis on top,
+            ]
+
+            \addplot [forget plot] graphics [
+                xmin= 0, xmax=6,
+                ymin=-6, ymax=-2,
+            ] 
+            { het/hetero.png };
+
+            \input{ode/ode_cl0};
+            \input{ode/ode_cl3};
+            \input{ode/ode_cl8};
+            \input{ode/ode_cl15};
+            %
+            \input{basilisk/bas_cl0};
+            \input{basilisk/bas_cl3};
+            \input{basilisk/bas_cl8};
+            \input{basilisk/bas_cl15};
+    \end{axis}
+\end{tikzpicture}
+
+
+\end{document}

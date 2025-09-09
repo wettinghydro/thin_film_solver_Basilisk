@@ -1,0 +1,30 @@
+reset;
+name='hetero';
+set terminal pngcairo color size 5.0 in, 5.0 in
+set output name.'.png'
+set xr[-3:3]
+set yr[-3:3]
+
+g(x,y)=1.2 + 0.4 * tanh(2.0*sin(6.0*atan2(y,x))) * tanh(2.0*sin(pi*sqrt(x*x+y*y)))
+
+
+set samples 451, 451
+set isosamples 451, 451
+set view map;
+set size ratio -1;
+set palette defined (0 '#FFFFFF', 1 '#666666')
+
+set lmargin at screen 0;
+set rmargin at screen 1;
+set bmargin at screen 0;
+set tmargin at screen 1;
+
+set cbrange[1.0:2.5]
+unset colorbox;
+unset border;
+unset xtics;
+unset ytics;
+f(x, y) = g(x, y) * g(x,y)
+
+sp [-3:3][-3:3] f(x, y) w pm3d not
+set out
