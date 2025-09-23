@@ -2,6 +2,8 @@
 
 This repository contains the source code and data generation scripts used to reproduce the figures and results presented in our paper. All code is written in C and uses the Basilisk solver.
 
+[Link to article](https://doi.org/10.1007/s00162-025-00757-x).
+
 ## Repository Structure
 
 * **`Figure_XX/`**: Contains the specific code used to create the figure.
