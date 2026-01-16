@@ -85,9 +85,6 @@ Initially, ```h``` is set equal to the precursor film and ```hamaker``` to unity
 		{
 			h[]       = precFilm;
 			hamaker[] = 1.0;
-#if ELECTRO
-			q[] = 0.;
-#endif
 		}
 
 /**
@@ -288,17 +285,6 @@ event slicer(t+=Tend/noOfFigsToSave, last)
 		char b[100]; sprintf(b, "%sslice%06.02f.gnp", dirGnu, t);
 		outputSlice(h, b, linear = 1, n={0,1,0}, alpha=0.0);
 	}
-
-#if ELECTRO
-	{
-		char b[100]; sprintf(b, "%sqslice%06.02f.gnp", dirGnu, t);
-		outputSlice(q, b, linear = 1, n={0,1,0}, alpha=0.0);
-	}
-	{
-		char b[100]; sprintf(b, "%sqDiag%06.02f.gnp", dirGnu, t);
-		outputSlice(q, b, linear = 1, n={-1,1,0}, alpha=0.0);
-	}
-#endif
 
 #if ROUGH
 	{

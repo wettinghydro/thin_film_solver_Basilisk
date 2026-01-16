@@ -154,15 +154,6 @@ E  &= \frac{\mathcal{E} - \delta(\Delta z - \Pi(\mathbf{x}, h) - w_1 z)}{(\mathc
 \end{aligned}
 $$
 */
-/**
-## Electro--Wetting
-When electric fields are introduced, ...
-we consider a leaky dielectric droplet
-<span style="color:red"> TODO</span>
-[Pillai et al.](#references)
-[Kainikkara et al.](#references)
-*/
-
 #include "poisson.h"
 /**
 First some utility macros are defined.
@@ -170,11 +161,7 @@ A macro is used to define scalars that are inserted in lists automatically
 to be able to switch between solving a system of equations or a single
 equation.
 */
-#if ELECTRO
-#define createList(sc1, sc2, scl, type) type sc1[], sc2[], *scl = {sc1, sc2}
-#else
 #define createList(sc1, sc2, scl, type) type sc1[], *scl = {sc1}
-#endif
 
 #define createScalars(sc1, sc2, scl) createList(sc1, sc2, scl, scalar)
 
@@ -278,19 +265,6 @@ delta, Efactor```.
 */
 #if EVAPORATION
 double kappa = 1.e-1, delta = 1.e-2, Efactor = 1.e-1;
-#endif
-
-/**
-<span style="color:red">
-TODO W-I-P
-</span>
-*/
-
-#if ELECTRO
-double hRatio = 2.0; // beta
-double eRatio = 9.45, sRatio = 4.0, psiC = 13.0; // epsilon, sigma, psiC
-double ePotential = 4.9, eAmp = 12.0, Tele = 005.00; // E, EforcingPeriod
-double eAmp2 = 1.0, Tele2=0.1;
 #endif
 
 /**
@@ -399,15 +373,6 @@ p[0:4][-2:4] f(x, 1    ) w l lw 2 t 'Evaporation - a = 1', \
                   0 w l ls 1 lc 'black' lw 1 not
 ~~~
 */
-/**
-## Electro--Wetting
-[Pillai et al.](#references)
-[Kainikkara et al.](#references)
-Separate header file
-<span style="color:red">
-WORK-IN-PROGRESS
-</span>
-*/
 
 /**
 # PFM solver Interface
@@ -435,10 +400,6 @@ to the MG solver (see the [linearized equation](#linearization-of-the-tfm))
 	(const) face vector  A;   // height Laplacian coefficient
 	(const) face vector *Bl;  // height gradient  coefficient
 	(const) face vector *Cl;  // height term coefficient (Jacobian)
-#if ELECTRO
-	(const) face vector *JQ;  // Q term coefficient (Jacobian) // maybe merge with Cl (?)
-	(const) scalar JSource;  // EW-Source Jacobian -fixme: pass better
-#endif
 };
 
 /**
@@ -474,10 +435,6 @@ The definitions of the MG residual and relaxation functions that include
 contributions depending on the heterogeneities defined are provided next.
 */
 
-#if ELECTRO
-#include "electrowettingUtilities.h"
-#endif
-
 /**
 Then this function is used to compute the residual of the linearized equations.
 */
@@ -485,24 +442,12 @@ static double residual_thin(scalar *al, scalar *bl, scalar *resl, void *data)
 {
 	LOG;
 	scalar f=al[0];
-#if ELECTRO
-	scalar fq=al[1];
-#endif
-
 	struct ThinData *thData = data;
 
 	(const) face vector A    = thData->A;
 	(const) face vector Bh   = thData->Bl[0];
 	// h- eq Jacobians(C)
 	(const) face vector Cdh  = thData->Cl[0];
-#if ELECTRO
-	(const) face vector Bq   = thData->Bl[1];
-	(const) face vector Cdq  = thData->Cl[1];
-	// Q- eq Jacobians(J)
-	(const) face vector Jqdh = thData->JQ[0];
-	(const) face vector Jqdq = thData->JQ[1];
-#endif
-
 /**
 Compute $\mathbf \nabla f$ and $\Delta h = f$
 */
@@ -523,16 +468,6 @@ the inclination term $ 3 \nabla_x ( G h )$ is included in C,
 		gh.x[] = A.x[]   * face_gradient_x(p, 0)
 					 + Bh.x[]  * gradf.x[]
 					 + Cdh.x[] * face_value(f, 0);
-#if ELECTRO
-		Variables pv = {face_value(f, 0), face_value(q, 0), {x, y}};
-
-		gh.x[] += Bq.x[] * face_gradient_x(fq, 0)
-					 + Cdq.x[] * face_value(fq, 0)
-					 + psiPotentialSpaceTerm(pv) * gradPsiPotential_x(pv);
-
-		gq.x[] = Jqdh.x[] * face_value(f , 0)
-			     + Jqdq.x[] * face_value(fq, 0);
-#endif
 	}
 
 /**
@@ -603,14 +538,6 @@ static void relax_thin(scalar *al, scalar *bl, int l, void *data)
 	(const) face vector Cdh  = thData->Cl[0];
 
 
-#if ELECTRO
-	(const) face vector Bq   = thData->Bl[1];
-	// q- field
-	scalar fq = al[1];
-	// q- Contributions
-	(const) face vector Cdq = thData->Cl[1];
-#endif
-
 #if JACOBI
 	scalar c[];
 #else
@@ -630,23 +557,12 @@ static void relax_thin(scalar *al, scalar *bl, int l, void *data)
 			// DIV(FACEVAL) TERM
 			n -= 0.5 * (Cdh.x[1] * f[1] - Cdh.x[] * f[-1]) * cube(Delta);
 			d += 0.5 * (Cdh.x[1]        - Cdh.x[]        ) * cube(Delta);
-#if ELECTRO
-			// DIV(GRADIENT) TERM
-			n -= (Bq.x[1] * fq[1] + Bq.x[] * fq[-1]) * sq(Delta);
-			d -= (Bq.x[1]         + Bq.x[]         ) * sq(Delta);
-			// DIV(FACEVAL) TERM - Q
-			n -= 0.5 * (Cdq.x[1] * fq[1] - Cdq.x[] * fq[-1]) * cube(Delta);
-			d += 0.5 * (Cdq.x[1]         - Cdq.x[]         ) * cube(Delta);
-#endif
 		}
 
 		c[] = n / d;
 	}
 
 	LOG;
-#if ELECTRO
-	relax_electroThin(al, bl, l, data);
-#endif
 
 #if JACOBI
   foreach_level_or_leaf (l)
@@ -890,17 +806,6 @@ Compute the evaporation source term, i.e. ```scalar``` $E$
 #endif
 
 /**
-Compute the electro terms,
-*/
-#if ELECTRO
-		createList(Jh, Jq, JQ, face vector); // store Jacobians of Q
-	 	p.JQ = JQ;
-
-		scalar JSource[];
-		p.JSource = JSource;
-		newton_Contributions_ElectroTFM(p, gradH, lapH, bl);
-#endif
-/**
 The coefficients are restricted to all grid levels. We first group them in a
 scalar list to avoid multiple calls to the restriction function.
 */
@@ -916,13 +821,6 @@ scalar list to avoid multiple calls to the restriction function.
 
 		for (scalar sc in (scalar *){p.A})
 		coefs = list_add(coefs, sc);
-
-#if ELECTRO
-		for (scalar sc in (scalar *)p.JQ)
-			coefs = list_add(coefs, sc);
-
-			coefs = list_add(coefs, p.JSource);
-#endif
 
 		restriction(coefs);
 

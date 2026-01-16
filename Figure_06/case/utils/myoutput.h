@@ -311,22 +311,9 @@ void outputInitalPNGs(char *dirFigures)
 		char b[100]; sprintf(b, "%shinitial.png", dirFigures);
 		save(b);
 	}
-#if ELECTRO
-	{
-		squares("q", spread = -1, linear=1);
-		cells(lw=0.5);
-		draw_string("t=0", lc={0,0,0}, lw = 2);
-
-		char b[100]; sprintf(b, "%sqinitial.png", dirFigures);
-		save(b);
-	}
-#endif
 #else
 		outputPNGSnapshot(hamaker, dirFigures, "Init");
 		outputPNGSnapshot(h, dirFigures, "Init");
-#if ELECTRO
-		outputPNGSnapshot(q, dirFigures, "Init");
-#endif
 #if ROUGH
 		outputPNGSnapshot(s, dirFigures, "Init", spread=-1);
 #endif
