@@ -2,8 +2,6 @@
 
 This repository contains the source code and data generation scripts used to reproduce the figures and results presented in our paper. All code is written in C and uses the Basilisk solver.
 
-[Link to article](https://doi.org/10.1007/s00162-025-00757-x).
-
 ## Repository Structure
 
 * **`Figure_XX/`**: Contains the specific code used to create the figure.
@@ -39,6 +37,14 @@ To compile with MPI:
 
 `./compile.sh thinFilm.c -D_MPI=1`
 
+To run a case then simply:
+
+`./run.exe 2> log.err`
+
+Or if you need to define the input parameters via a file (filename).dat:
+
+`./run.exe parameters.dat 2> log.err`
+
 ### Compilation Flags
 Additional flags can be used to customize the compilation:
 
@@ -60,29 +66,23 @@ For all cases, the post-processed data are included to be used directly in the `
 
 ---
 
-## Citation
-If you use this code or the concepts from the paper in your own work, please cite the following publication:
+## Contact
+If you encounter any issues or have questions, please open an issue on this repository.
+
+## <h3 style="color:red">Citation</h3>
 
 ```bibtex
-﻿@article{Vrionis_2025_ThinFilmSolver,
-author={Vrionis, Panayiotis Yiannis
-and Demou, Andreas D.
-and Karapetsas, George
-and Papageorgiou, Demetrios T.
-and Savva, Nikos},
-title={An efficient and highly scalable solver for modelling thin film flows in heterogeneous environments},
-journal={Theoretical and Computational Fluid Dynamics},
-year={2025},
-month={Sep},
-day={13},
-volume={39},
-number={5},
-pages={37},
-abstract={We present an open-source, modular and highly scalable thin-film flow solver that can perform complex simulations of wetting and dewetting phenomena in the presence of substrate or environmental heterogeneities. The implementation is based on the thin-film approximation and circumvents the stress singularity at moving contact lines by assuming the presence of an ultra thin precursor film covering the whole surface. The solver is implemented within the open-source Basilisk library (http://basilisk.fr/), and is validated by comparing with the predictions of reduced-order models derived from matched asymptotics analyses for a number of representative cases with isolated droplets. The capabilities of the solver are demonstrated by simulating multiple interacting droplets sliding on an inclined and chemically heterogeneous substrate.},
-issn={1432-2250},
-doi={10.1007/s00162-025-00757-x},
-url={https://doi.org/10.1007/s00162-025-00757-x}
+@article{Vrionis_2025_ThinFilmSolver,
+  author  = {P.-Y. Vrionis and Andreas D. Demou and George Karapetsas and Demetrios T. Papageorgiou and Nikos Savva}
+  title   = {An efficient and highly scalable solver for modelling thin film flows in heterogeneous environments},
+  journal = {Theoretical and Computational Fluid Dynamics},
+  volume  = {XX},
+  number  = {YY},
+  pages   = {ZZZ--ZZZ},
+  year    = {2025},
+  doi     = {},
 }
-
-
 ```
+<div style="color:red">
+P. Y. Vrionis, A. D. Demou, G. Karapetsas, D. T. Papageorgiou and N. Savva. "An efficient and highly scalable solver for modelling thin film flows in heterogeneous environments", *Theoretical and Computational Fluid Dynamics*, 2025.
+</div>
