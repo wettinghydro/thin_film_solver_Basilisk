@@ -30,10 +30,6 @@ static void computeGradAndNegLaplace(scalar f, face vector grad, scalar lap)
 	boundary({lap});
 }
 
-#if ELECTRO
-#include "electrowettingUtilities.h"
-#endif
-
 /**
 This function is used during the MG iterations and
 computes the residual of the linearized equations.
@@ -41,9 +37,6 @@ computes the residual of the linearized equations.
 static double residual_thin(scalar *al, scalar *bl, scalar *resl, void *data)
 {
 	scalar f=al[0];
-#if ELECTRO
-	scalar fq=al[1];
-#endif
 
 	struct ThinData *thData = data;
 
@@ -51,13 +44,6 @@ static double residual_thin(scalar *al, scalar *bl, scalar *resl, void *data)
 	(const) face vector Bh   = thData->Bl[0];
 	// h- eq Jacobians(C)
 	(const) face vector Cdh  = thData->Cl[0];
-#if ELECTRO
-	(const) face vector Bq   = thData->Bl[1];
-	(const) face vector Cdq  = thData->Cl[1];
-	// Q- eq Jacobians(J)
-	(const) face vector Jqdh = thData->JQ[0];
-	(const) face vector Jqdq = thData->JQ[1];
-#endif
 
 /**
 Compute $\mathbf \nabla f$ and $\Delta h = f$
@@ -79,16 +65,6 @@ the inclination term $ 3 \nabla_x ( G h )$ is included in C,
 		gh.x[] = A.x[]   * face_gradient_x(p, 0)
 					 + Bh.x[]  * gradf.x[]
 					 + Cdh.x[] * face_value(f, 0);
-#if ELECTRO
-		Variables pv = {face_value(f, 0), face_value(q, 0), {x, y}};
-
-		gh.x[] += Bq.x[] * face_gradient_x(fq, 0)
-					 + Cdq.x[] * face_value(fq, 0)
-					 + psiPotentialSpaceTerm(pv) * gradPsiPotential_x(pv);
-
-		gq.x[] = Jqdh.x[] * face_value(f , 0)
-			     + Jqdq.x[] * face_value(fq, 0);
-#endif
 	}
 
 /**
@@ -157,13 +133,6 @@ static void relax_thin(scalar *al, scalar *bl, int l, void *data)
 	(const) face vector Cdh  = thData->Cl[0];
 
 
-#if ELECTRO
-	(const) face vector Bq   = thData->Bl[1];
-	// q- field
-	scalar fq = al[1];
-	// q- Contributions
-	(const) face vector Cdq = thData->Cl[1];
-#endif
 
 #if JACOBI
 	scalar c[];
@@ -184,22 +153,10 @@ static void relax_thin(scalar *al, scalar *bl, int l, void *data)
 			// DIV(FACEVAL) TERM
 			n -= 0.5 * (Cdh.x[1] * f[1] - Cdh.x[] * f[-1]) * cube(Delta);
 			d += 0.5 * (Cdh.x[1]        - Cdh.x[]        ) * cube(Delta);
-#if ELECTRO
-			// DIV(GRADIENT) TERM
-			n -= (Bq.x[1] * fq[1] + Bq.x[] * fq[-1]) * sq(Delta);
-			d -= (Bq.x[1]         + Bq.x[]         ) * sq(Delta);
-			// DIV(FACEVAL) TERM - Q
-			n -= 0.5 * (Cdq.x[1] * fq[1] - Cdq.x[] * fq[-1]) * cube(Delta);
-			d += 0.5 * (Cdq.x[1]         - Cdq.x[]         ) * cube(Delta);
-#endif
 		}
 
 		c[] = n / d;
 	}
-
-#if ELECTRO
-	relax_electroThin(al, bl, l, data);
-#endif
 
 #if JACOBI
   foreach_level_or_leaf (l)

@@ -153,15 +153,6 @@ E  &= \frac{\mathcal{E} - \delta(\Delta z - \Pi(\mathbf{x}, h) - w_1 z)}{(\mathc
 \end{aligned}
 $$
 */
-/**
-## Electro--Wetting
-When electric fields are introduced, ...
-we consider a leaky dielectric droplet
-<span style="color:red"> TODO</span>
-[Pillai et al.](#references)
-[Kainikkara et al.](#references)
-
-*/
 
 /**
 # Basilisk Implementation
@@ -187,11 +178,7 @@ we consider a leaky dielectric droplet
 /**
 Utility Macro to define scalars that are inserted in lists automatically
 */
-#if ELECTRO
-#define createList(sc1, sc2, scl, type) type sc1[], sc2[], *scl = {sc1, sc2}
-#else
 #define createList(sc1, sc2, scl, type) type sc1[], *scl = {sc1}
-#endif
 
 #define createScalars(sc1, sc2, scl) createList(sc1, sc2, scl, scalar)
 /**
@@ -259,18 +246,6 @@ delta, Efactor```.
 double kappa = 1.e-1, delta = 1.e-2, Efactor = 1.e-1;
 #endif
 
-/**
-<span style="color:red">
-TODO W-I-P
-</span>
-*/
-
-#if ELECTRO
-double hRatio = 2.0; // beta
-double eRatio = 9.45, sRatio = 4.0, psiC = 13.0; // epsilon, sigma, psiC
-double ePotential = 4.9, eAmp = 12.0, Tele = 005.00; // E, EforcingPeriod
-double eAmp2 = 1.0, Tele2=0.1;
-#endif
 
 /**
 ### Numerics Constants
@@ -546,10 +521,6 @@ to the MG solver (see the [linearized equation](#linearization-of-the-tfm))
 	(const) face vector  A;   // height Laplacian coefficient
 	(const) face vector *Bl;  // height gradient  coefficient
 	(const) face vector *Cl;  // height term coefficient (Jacobian)
-#if ELECTRO
-	(const) face vector *JQ;  // Q term coefficient (Jacobian) // maybe merge with Cl (?)
-	(const) scalar JSource;  // EW-Source Jacobian -fixme: pass better
-#endif
 };
 
 /**
@@ -670,17 +641,6 @@ Compute the evaporation source term, i.e. ```scalar``` $E$
 #endif
 
 /**
-Compute the electro terms,
-*/
-#if ELECTRO
-		createList(Jh, Jq, JQ, face vector); // store Jacobians of Q
-	 	p.JQ = JQ;
-
-		scalar JSource[];
-		p.JSource = JSource;
-		newton_Contributions_ElectroTFM(p, gradH, lapH, bl);
-#endif
-/**
 The coefficients are restricted to all grid levels. We first group them in a
 scalar list to avoid multiple calls to the restriction function.
 */
@@ -696,13 +656,6 @@ scalar list to avoid multiple calls to the restriction function.
 
 		for (scalar sc in (scalar *){p.A})
 		coefs = list_add(coefs, sc);
-
-#if ELECTRO
-		for (scalar sc in (scalar *)p.JQ)
-			coefs = list_add(coefs, sc);
-
-			coefs = list_add(coefs, p.JSource);
-#endif
 
 		restriction(coefs);
 
@@ -929,9 +882,6 @@ Initially, ```h``` is set equal to the precursor film and ```hamaker``` to unity
 		{
 			h[]       = precFilm;
 			hamaker[] = 1.0;
-#if ELECTRO
-			q[] = 0.;
-#endif
 		}
 
 /**
@@ -1009,23 +959,10 @@ Hamaker field.
 			char b[100]; sprintf(b, "%shinitial.png", dirFigures);
 			save(b);
 		}
-#if ELECTRO
-		{
-			squares("q", spread = -1, linear=1);
-			cells(lw=0.5);
-			draw_string("t=0", lc={0,0,0}, lw = 2);
-
-			char b[100]; sprintf(b, "%sqinitial.png", dirFigures);
-			save(b);
-		}
-#endif
 		//clear();
 #else
 		outputPNGSnapshot(hamaker, dirFigures, "Init");
 		outputPNGSnapshot(h, dirFigures, "Init");
-#if ELECTRO
-		outputPNGSnapshot(q, dirFigures, "Init");
-#endif
 #if ROUGH
 		outputPNGSnapshot(s, dirFigures, "Init", spread=-1);
 #endif
@@ -1262,16 +1199,6 @@ event slicer(t+=Tend/noOfFigsToSave, last)
 		outputSlice(h, b, linear = 1, n={0,1,0}, alpha=0.0);
 	}
 
-#if ELECTRO
-	{
-		char b[100]; sprintf(b, "%sqslice%06.02f.gnp", dirGnu, t);
-		outputSlice(q, b, linear = 1, n={0,1,0}, alpha=0.0);
-	}
-	{
-		char b[100]; sprintf(b, "%sqDiag%06.02f.gnp", dirGnu, t);
-		outputSlice(q, b, linear = 1, n={-1,1,0}, alpha=0.0);
-	}
-#endif
 
 #if ROUGH
 	{

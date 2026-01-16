@@ -10,8 +10,6 @@ union CaseParameters {
 		double famp, psiA_d, Tper;
 		// evaporation constants
 		double kappa, delta, Efactor;
-		// electrowetting constants
-		//TODO
 		// simulation parameters
 		double Tend;
 		double lmin, lmax; // store as double to simplify
