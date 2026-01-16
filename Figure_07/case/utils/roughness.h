@@ -1,7 +1,3 @@
-//TODO: I should create a static function that computes the coefficients.
-//Then, having a basic contributions called compute_linearized_operators_basic,
-//I create static function that calls that one from within. Adding the necessary
-//contributions.
 /**
 Header file used for the definition of the [TFE](#thinFilm.h) Roughness Terms.
 
