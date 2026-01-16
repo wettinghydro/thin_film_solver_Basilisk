@@ -57,6 +57,17 @@ int main()
 	fprintf(fp, "\n");
 	fprintf(fp, "#3. Level Max \n");
 	fprintf(fp, "\n");
+	fprintf(fp, "#-------------------------------\n");
+	fprintf(fp, "#----Heterogeneity Parameters---\n");
+	fprintf(fp, "#-------------------------------\n");
+	fprintf(fp, "#0-7. Parameters (same line)\n");
+	fprintf(fp, "#1.p0 2.p1 3.p2 4.p3 5.p4 6.p5 7.p6 8.p7\n");
+	fprintf(fp, "\n");
+	fprintf(fp, "#-------------------------------\n");
+	fprintf(fp, "#----Droplet Initialization---\n");
+	fprintf(fp, "#-------------------------------\n");
+	fprintf(fp, "#1.a 2.r 3.c_x 4.c_y\n");
+	fprintf(fp, "\n");
 	fclose(fp);
 
 	fprintf(stdout, "****Done\n");
